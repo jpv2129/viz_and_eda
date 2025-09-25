@@ -17,3 +17,34 @@ data("weather_df")
 weather_df
 ```
 
+We’ll start with a basic scatterplot to develop our understanding of ggplot’s data + mappings + geoms approach, and build quickly from there.
+
+## Basic Scatterplot
+
+```{r}
+ggplot(weather_df, aes(x = tmin, y = tmax))
+```
+
+We’ll move straight into defining aesthetic mappings. To create a basic scatterplot, we need to map variables to the X and Y coordinate aesthetics:
+
+Well, my “scatterplot” is blank. That’s because I’ve defined the data and the aesthetic mappings, but haven’t added any geoms: ggplot knows what data I want to plot and how I want to map variables, but not what I want to show. Below I add a geom to define my first scatterplot.
+
+```{r}
+ggplot(weather_df, aes(x = tmin, y = tmax)) + 
+  geom_point()
+```
+
+If want to pre-process with piping:
+
+The code below could be used instead to produce the same figure. Using this style can be helpful if you want to do some pre-processing before making your plot but don’t want to save the intermediate data. It’s also consistent with many other pipelines: you start with a data frame, and then do stuff by piping the dataframe into the next function. Most of my plotting code is written like this.
+
+```{r}
+weather_df |>
+  ggplot(aes(x = tmin, y = tmax)) + 
+  geom_point()
+```
+
+
+
+
+
