@@ -44,6 +44,60 @@ weather_df |>
   geom_point()
 ```
 
+## Advanced Scatterplot
+
+Let’s start with name, which I can incorporate using the color aesthetic:
+
+```{r}
+ggplot(weather_df, aes(x = tmin, y = tmax)) + 
+  geom_point(aes(color = name))
+```
+
+Next I’ll add a smooth curve and make the data points a bit transparent.
+
+```{r}
+ggplot(weather_df, aes(x = tmin, y = tmax)) + 
+  geom_point(aes(color = name), alpha = .5) +
+  geom_smooth(se = FALSE)
+```
+
+The curve gives a sense of the relationship between variables, and the transparency shows where data are overlapping. I can’t help but notice, though, that the smooth curve is for all the data but the colors are only for the scatterplot. Turns out that this is due to where I defined the mappings. The X and Y mappings apply to the whole graphic, but color is currently geom-specific. Sometimes you want or need to do this, but for now I don’t like it. If I’m honest, I’m also having a hard time seeing everything on one plot, so I’m going to add facet based on name as well.
+
+```{r}
+ggplot(weather_df, aes(x = tmin, y = tmax, color = name)) + 
+  geom_point(alpha = .5) +
+  geom_smooth(se = FALSE) + 
+  facet_grid(. ~ name) #puts on separate plots
+```
+
+Relationship between minimum and maximum temperature is now kinda boring, so I’d prefer something that shows the time of year. Also I want to learn about precipitation, so let’s do that.
+
+```{r}
+ggplot(weather_df, aes(x = date, y = tmax, color = name)) + 
+  geom_point(aes(size = prcp), alpha = .5) +
+  geom_smooth(se = FALSE) + 
+  facet_grid(. ~ name)
+```
+
+Learning assessment:
+Write a code chain that starts with weather_df; focuses only on Central Park, converts temperatures to Fahrenheit, makes a scatterplot of min vs. max temperature, and overlays a linear regression line (using options in geom_smooth()).
+
+```{r}
+weather_df |> 
+  filter(name == "CentralPark_NY") |> #uses piping
+  mutate(
+    tmax_fahr = tmax * (9 / 5) + 32,
+    tmin_fahr = tmin * (9 / 5) + 32) |> 
+  ggplot(aes(x = tmin_fahr, y = tmax_fahr)) +
+  geom_point(alpha = .5) + 
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+
+
+
+
+
 
 
 
