@@ -6,8 +6,14 @@ output: html_document
 ---
 
 ## Setup
+
 ```{r}
 library(tidyverse)
 library(ggridges)
+
+library(p8105.datasets)
+data("weather_df")
+
+weather_df
 ```
 
