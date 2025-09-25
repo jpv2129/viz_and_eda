@@ -1,0 +1,13 @@
+---
+title: "visualization_1"
+author: "Jake Vettoretti"
+date: "2025-09-25"
+output: html_document
+---
+
+## Setup
+```{r}
+library(tidyverse)
+library(ggridges)
+```
+
