@@ -93,6 +93,48 @@ weather_df |>
   geom_smooth(method = "lm", se = FALSE)
 ```
 
+# Odds and ends
+
+There are lots of ways you can mix and match elements, depending on your goals. I don’t like the following plot as much (it doesn’t show the data and omits precipitation), but it illustrates that you have lots of freedom in determining which geoms to include and how to compare your groups. If nothing else, you should be starting to get a sense for why you create way more plots for yourself than for others.
+
+```{r}
+ggplot(weather_df, aes(x = date, y = tmax, color = name)) + #removes geom_point
+  geom_smooth(se = FALSE) 
+```
+
+When you’re making a scatterplot with lots of data, there’s a limit to how much you can avoid overplotting using alpha levels and transparency. In these cases geom_hex(), geom_bin2d(), or geom_density2d() can be handy:
+
+```{r}
+ggplot(weather_df, aes(x = tmax, y = tmin)) + 
+  geom_hex()
+```
+
+Package not installed.
+
+Learning assessment:
+In the preceding, we set the alpha aesthetic “by hand” instead of mapping it to a variable. This is possible for other aesthetics too. To check your understanding of this point, try to explain why the two lines below don’t produce the same result:
+
+```{r}
+ggplot(weather_df) + geom_point(aes(x = tmax, y = tmin), color = "blue")
+ggplot(weather_df) + geom_point(aes(x = tmax, y = tmin, color = "blue"))
+```
+
+Reason why different: In the first attempt, we’re defining the color of the points by hand; in the second attempt, we’re implicitly creating a color variable that has the value blue everywhere; ggplot is then assigning colors according to this variable using the default color scheme.
+
+## Univariate plots 
+
+Sometimes you need to carefully understand the distribution of single variables – we’ll tackle that now. This is primarily an issue of learning some new geoms and, where necessary, some new aesthetics.
+
+First up is the histogram.
+
+```{r}
+ggplot(weather_df, aes(x = tmax)) + 
+  geom_histogram()
+```
+
+
+
+
 
 
 
