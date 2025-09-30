@@ -174,7 +174,19 @@ weather_df |>
 Data tidiness, creating it
 ```{r}
 pulse_df = 
-  haven::read_sas("data_import_examples/public_pulse_data.sas7bdat")
+  haven::read_sas("data_import_examples/public_pulse_data.sas7bdat") |> 
+  janitor::clean_names() |> 
+  pivot_longer(
+    bdi_score_bl:bdi_score_12m,
+    names_to = "visit", 
+    names_prefix= "bdi_score_",
+    values_to = "bdi"
+    ) |> #The pivot_longer() function in R's tidyr package transforms data from a "wide" format to a "long" format. This means it takes multiple columns that represent different measurements or variables and converts them into two new columns: one containing the original column names (now as values), and another containing the corresponding values from those original columns.
+  mutate(visit = fct_inorder(visit))
+
+pulse_df |> 
+  ggplot(aes(x=visit, y=bdi)) +
+  geom_boxplot()
 ```
 
 
