@@ -113,4 +113,40 @@ ggp_temp_plot +
   theme(legend.position = "bottom")
 ```
 
+## Adding data in geoms
+```{r}
+central_park_df = 
+  weather_df |> 
+  filter(name == "CentralPark_NY")
+
+molokai_df = 
+  weather_df |> 
+  filter(name == "Molokai_HI")
+
+ggplot(data = molokai_df, aes(x = date, y = tmax, color = name)) + 
+  geom_point() + 
+  geom_line(data = central_park_df) 
+```
+## Patchwork
+Sometimes, though, you want to show two or three fundamentally different plots in the same graphic: you may want to juxtapose a scatterplot and a boxplot, or show scatterplots illustrating relationships between different variables. In this case, a solution is to create each of the panels you want separately and combine panels using tools in the patchwork package:
+
+Make three plots and combine using patchwork
+```{r}
+ggp_tmax_tmin = 
+  weather_df |> 
+  ggplot(aes(x=tmin, y =tmax, color = name)) +
+  geom_point(alpha = 0.5)
+
+geom_prec_density = 
+  weather_df |> 
+  filter(prcp > 0) |> 
+  ggplot(aes(x = prcp, fill =name))+
+  geom_density(alpha=0.5)
+
+gg_temp_season = 
+  weather_df |> 
+  ggplot(aes(x=date, y=tmax, color=name))+
+  geom_point(alpha = 0.5) +
+  geom_smooth(se = FALSE)
+```
 
