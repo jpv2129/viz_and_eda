@@ -137,16 +137,45 @@ ggp_tmax_tmin =
   ggplot(aes(x=tmin, y =tmax, color = name)) +
   geom_point(alpha = 0.5)
 
-geom_prec_density = 
+ggp_prec_density = 
   weather_df |> 
   filter(prcp > 0) |> 
   ggplot(aes(x = prcp, fill =name))+
   geom_density(alpha=0.5)
 
-gg_temp_season = 
+ggp_temp_season = 
   weather_df |> 
   ggplot(aes(x=date, y=tmax, color=name))+
   geom_point(alpha = 0.5) +
-  geom_smooth(se = FALSE)
+  geom_smooth(se = FALSE) +
+  theme(legend.position = "bottom")
+
+(ggp_tmax_tmin + ggp_prec_density)/ggp_temp_season
 ```
+
+## Data manioulation
+
+Let's make temperature violin plots.
+```{r}
+weather_df |> 
+  mutate(name = fct_relevel(name, c("Molokai_HI", "CentralPark_NY", "Waterhole_WA"))) |> #factor orders variables
+  ggplot(aes(x=name,y=tmax,fill=name))+
+  geom_violin(apla=0.5)
+```
+Used factoring above to reorder
+
+```{r}
+weather_df |> 
+  mutate(name=fct_reorder(name, tmax)) |> 
+  ggplot(aes(x=name,y=tmax,fill=name))+
+  geom_violin(alpha = 0.5)
+```
+
+Data tidiness, creating it
+```{r}
+pulse_df = 
+  haven::read_sas("data_import_examples/public_pulse_data.sas7bdat")
+```
+
+
 
