@@ -58,5 +58,10 @@ weather_df |>
   ggplot(aes(x = tmin, y = tmax, color = name, shape = name)) + 
   geom_point(alpha = .75)
 ```
+## Add groups
+```{r}
+weather_df |>
+  group_by(name, month)
+```
 
 
