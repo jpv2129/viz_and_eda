@@ -64,4 +64,50 @@ weather_df |>
   group_by(name, month)
 ```
 
+Counting things
+```{r}
+weather_df |>
+  group_by(name, month) |>
+  summarize(
+    n = n() #also a n_distinct function, which can counts up distinct instances instead of total number
+    )
+```
+You can count directly too
+```{r}
+weather_df |> 
+  count(name)
+```
+## Making better summaries
+```{r}
+weather_summary <- weather_df |>
+  group_by(name, month) |>
+  summarize(
+    mean_tmax = mean(tmax, na.rm = TRUE),
+    median_tmin = median(tmin, na.rm = TRUE),
+    sd_prcp = sd(prcp, na.rm = TRUE)
+  )
+```
+
+Groups are now summarized.
+```{r}
+weather_summary <- weather_df |>
+  group_by(name, month) |>
+  summarize(
+    mean_tmax = mean(tmax, na.rm = TRUE)
+  ) |> 
+  pivot_wider(
+    names_from = name,
+    values_from = mean_tmax
+  ) |>
+  knitr::kable(digits = 2)
+```
+
+
+
+
+
+
+
+
+
 
