@@ -102,6 +102,61 @@ weather_summary <- weather_df |>
   knitr::kable(digits = 2)
 ```
 
+## Mutate with groups 
+```{r}
+#mutate comes up a lot with grouping, also with summarize
+weather_df |> 
+  group_by(name) |> 
+  mutate(
+    mean_tmax = mean(tmax, na.rm=TRUE), #compute is affected by grouping structure, mean goes along with group
+    center_tmax=tmax-mean_tmax
+  ) |> 
+  ggplot(aes(x=date, y=center_tmax, color = name)) +
+  geom_point()
+```
+Look for cold days
+```{r}
+weather_df |> 
+  group_by(name, month) |> 
+  mutate(temp_rank = min_rank(desc(tmin))) |> 
+  filter(temp_rank < 2)
+```
+
+What about lags?
+```{r}
+weather_df |> #grouping makes correct
+  group_by(name) |> 
+  mutate(lagged_tmax=lag(tmax))
+```
+
+Using the variables we created
+```{r}
+weather_df |> 
+  group_by(name) |> 
+  mutate(
+    temp_change = tmax - lag(tmax)
+  ) |> 
+  summarize(
+    sd_tmax_change = sd(temp_change, na.rm = TRUE),
+    tmax_change_max = max(temp_change, na.rm = TRUE)
+            )
+```
+Which day did that change occur?
+```{r}
+weather_df |>
+  group_by(name) |>
+  mutate(
+    temp_change = tmax - lag(tmax),
+    change_rank = min_rank(desc(temp_change))
+  ) |> 
+  filter(
+    change_rank<2
+  )
+```
+
+
+
+
 
 
 
